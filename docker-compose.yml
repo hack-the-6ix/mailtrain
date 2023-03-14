@@ -22,7 +22,7 @@ services:
     - mongo-data:/data/db
 
   mailtrain:
-    image: mailtrain/mailtrain:latest
+    image: hackthe6ix/mailtrain:latest
     ports:
     - "3000:3000"
     - "3003:3003"

@@ -51,6 +51,8 @@ WITH_POSTFIXBOUNCE=${WITH_POSTFIXBOUNCE:-'false'}
 POSTFIXBOUNCE_PORT=${POSTFIXBOUNCE_PORT:-'5699'}
 POSTFIXBOUNCE_HOST=${POSTFIXBOUNCE_HOST:-'127.0.0.1'}
 
+FREEZE_ADMIN_PASSWORD=${FREEZE_ADMIN_PASSWORD:-'false'}
+
 # Warning for users that already rely on the MAILTRAIN_SETTING variable
 # Can probably be removed in the future.
 MAILTRAIN_SETTING=${MAILTRAIN_SETTINGS:-}
@@ -218,6 +220,6 @@ if [ "$WITH_LDAP" = "true" ]; then
   fi
 fi
 
-NODE_ENV=production node setup/docker-entrypoint-db-setup.js "$ADMIN_PASSWORD" "$ADMIN_ACCESS_TOKEN"
+NODE_ENV=production node setup/docker-entrypoint-db-setup.js "$ADMIN_PASSWORD" "$ADMIN_ACCESS_TOKEN" "$FREEZE_ADMIN_PASSWORD"
 
 NODE_ENV=production node index.js

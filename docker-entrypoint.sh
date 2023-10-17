@@ -51,6 +51,7 @@ WITH_POSTFIXBOUNCE=${WITH_POSTFIXBOUNCE:-'false'}
 POSTFIXBOUNCE_PORT=${POSTFIXBOUNCE_PORT:-'5699'}
 POSTFIXBOUNCE_HOST=${POSTFIXBOUNCE_HOST:-'127.0.0.1'}
 
+MAILTRAIN_CONFIG_SOURCE=${MAILTRAIN_CONFIG_SOURCE:-''}
 FREEZE_ADMIN_PASSWORD=${FREEZE_ADMIN_PASSWORD:-'false'}
 
 # Warning for users that already rely on the MAILTRAIN_SETTING variable
@@ -59,6 +60,11 @@ MAILTRAIN_SETTING=${MAILTRAIN_SETTINGS:-}
 if [ ! -z "$MAILTRAIN_SETTING" ]; then
     echo 'Error: MAILTRAIN_SETTINGS is no longer supported. See README.md'
     exit 1
+fi
+
+if [ ! -z "$MAILTRAIN_CONFIG_SOURCE" ] && [ -f "$MAILTRAIN_CONFIG_SOURCE" ]; then
+  echo 'Info: copying application/production.yaml from external source'
+  cp -f "$MAILTRAIN_CONFIG_SOURCE" server/config/production.yaml
 fi
 
 if [ -f server/config/production.yaml ]; then

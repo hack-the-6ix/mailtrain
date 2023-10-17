@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt-nodejs');
 const bcryptHash = bluebird.promisify(bcrypt.hash.bind(bcrypt));
 
 async function init() {
-    const args = process.argv.slice(3);
+    const args = process.argv.slice(2);
 
     if (args.length !== 3) {
         log.error('Usage: NODE_ENV=production node setup/docker-entrypoint-db-setup.js <admin password> <admin access token> <is password frozen>')
@@ -27,6 +27,9 @@ async function init() {
         const hashedPasswd = await bcryptHash(passwd, null, null);
         await knex('users').where({id: getAdminId()}).update({password: hashedPasswd});
     }
+    else {
+        log.info('Admin password is frozen, not resetting it.');
+    }
 
     if (accessToken !== '') {
         await knex('users').where({id: getAdminId()}).update({access_token: accessToken});
@@ -36,5 +39,3 @@ async function init() {
 }
 
 init().catch(err => {log.error('', err); process.exit(1); });
-
-
